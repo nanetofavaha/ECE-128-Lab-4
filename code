@@ -1,1 +1,21 @@
-
+module Top(
+    input SB, DOOR, KEY, BRK, PARK, HOOD, BAT_OK, AIB_OK, TMP_OK, PASS_OCC, SB_P, TRUNK, PBRK, SRV,
+    output START_PERMIT, CHIME, WARN_PRI2, WARN_PRI1, SEAT_WARN, DOOR_WARN, HOOD_WARN, TRUNK_WARN, BAT_WARN, AIRBAG_WARN, TEMP_WARN 
+    );
+    
+    
+    //default warnings
+    assign DOOR_WARN = ~DOOR;
+    assign HOOD_WARN = ~HOOD; 
+    assign TRUNK_WARN = ~TRUNK;
+    assign BAT_WARN = ~BAT_OK; 
+    assign TEMP_WARN = ~TMP_OK;
+    assign AIRBAG_WARN = ~AIB_OK;
+    //complex warnings
+    assign SEAT_WARN = ~SB | (PASS_OCC & ~SB_P); 
+    assign START_PERMIT = ~SRV & KEY & BRK & PARK & BAT_OK;
+    assign CHIME = KEY; 
+    assign WARN_PRI2 = KEY & ~PARK & (~TRUNK | ~HOOD | ~DOOR ) ;
+    assign WARN_PRI1 = KEY & ~PARK & (~BAT_OK | ~TMP_OK | ~AIB_OK);
+    
+endmodule
